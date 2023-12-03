@@ -4,9 +4,8 @@ const controller = require('../controllers/controller');
 
 const router = express.Router();
 
-const layouts = [ 'profile', 'watched', 'watching' ];
-const views = [ 'poster', 'card', 'card-overlay', 'banner', 'fanart', 'fanart-overlay', 'text' ];
-
+const layouts = ['profile', 'watched', 'watching'];
+const views = ['poster', 'card', 'card-overlay', 'banner', 'fanart', 'fanart-overlay', 'text'];
 
 router.get('/', (req, res) => {
   res.render('home');
@@ -18,10 +17,8 @@ router.get('/:slug/:layout/:view?', async (req, res, next) => {
   const view = req.params.view || 'poster';
   const language = req.locale;
 
-  if (layouts.indexOf(layout) < 0)
-    return next(createError(400, res.__('error.LAYOUT_NOT_FOUND')));
-  if (views.indexOf(view) < 0)
-    return next(createError(400, res.__('error.VIEW_NOT_FOUND')));
+  if (layouts.indexOf(layout) < 0) return next(createError(400, res.__('error.LAYOUT_NOT_FOUND')));
+  if (views.indexOf(view) < 0) return next(createError(400, res.__('error.VIEW_NOT_FOUND')));
 
   if (layout === 'profile' && view !== 'poster')
     return next(createError(400, res.__('error.VIEW_NOT_COMPATIBLE', 'profile', 'poster')));
@@ -35,12 +32,11 @@ router.get('/:slug/:layout/:view?', async (req, res, next) => {
       res.set('Cache-Control', 'no-cache');
       res.set('Content-Type', 'image/svg+xml');
       res.render(view + (layout === 'profile' ? `-${layout}` : ''), {
-        'layout': layout,
-        'data': data
+        layout: layout,
+        data: data,
       });
-    }
+    },
   });
 });
-
 
 module.exports = router;

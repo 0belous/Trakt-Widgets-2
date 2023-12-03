@@ -13,7 +13,7 @@ const app = express();
 const env = nunjucks.configure(path.resolve(__dirname, 'views'), {
   autoescape: true,
   express: app,
-  watch: process.env.NODE_ENV === 'development'
+  watch: process.env.NODE_ENV === 'development',
 });
 
 i18n.configure({
@@ -22,7 +22,7 @@ i18n.configure({
   defaultLocale: 'en',
   retryInDefaultLocale: true,
   queryParameter: 'language',
-  directory: './locales'
+  directory: path.resolve('./locales'),
 });
 env.addGlobal('date', new Date());
 env.addGlobal('__', i18n.__);
@@ -35,7 +35,6 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(i18n.init);
-
 
 app.use('/', routers);
 
@@ -57,11 +56,10 @@ app.use((err, req, res, next) => {
       res.render('error', { title: err.status, error: err });
     },
     default: () => {
-      res.send(`${err.status} | ${err.message}`)
-    }
+      res.send(`${err.status} | ${err.message}`);
+    },
   });
 });
-
 
 app.listen(PORT, () => {
   console.log(`App running on PORT ${PORT}`);
