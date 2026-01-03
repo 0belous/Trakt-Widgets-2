@@ -28,13 +28,19 @@ router.get('/:slug/:layout/:view?', async (req, res, next) => {
       res.render('viewer', { title: layout, slug: slug });
     },
     'image/*': async () => {
-      const data = await controller[layout](req, next, view, language);
-      res.set('Cache-Control', 'no-cache');
-      res.set('Content-Type', 'image/svg+xml');
-      res.render(view + (layout === 'profile' ? `-${layout}` : ''), {
-        layout: layout,
-        data: data,
-      });
+      try {
+        const data = await controller[layout](req, next, view, language);
+        if (!data) return;
+
+        res.set('Cache-Control', 'no-cache');
+        res.set('Content-Type', 'image/svg+xml');
+        res.render(view + (layout === 'profile' ? `-${layout}` : ''), {
+          layout: layout,
+          data: data,
+        });
+      } catch (err) {
+        next(err);
+      }
     },
   });
 });

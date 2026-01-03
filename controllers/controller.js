@@ -56,13 +56,17 @@ const profile = async (req, next, view, language) => {
             const type = element.type === 'movie' ? 'movie' : 'show';
             const { tmdb, imdb, tvdb } = element[type].ids;
 
-            image = await Image.get('card', {
-              tmdb_id: tmdb,
-              imdb_id: imdb,
-              tvdb_id: tvdb,
-              type: type,
-              language,
-            });
+            try {
+              image = await Image.get('card', {
+                tmdb_id: tmdb,
+                imdb_id: imdb,
+                tvdb_id: tvdb,
+                type: type,
+                language,
+              });
+            } catch (e) {
+              console.error(e);
+            }
           }
 
           return {
@@ -89,7 +93,8 @@ const watched = async (req, next, view, language) => {
       })
       .then(response => {
         return Image.to_base64(response.images.avatar.full);
-      });
+      })
+      .catch(() => null);
   }
 
   return await trakt.users
@@ -121,14 +126,19 @@ const watched = async (req, next, view, language) => {
       }
 
       let image = null;
-      if (view !== 'text')
-        image = await Image.get(view, {
-          tmdb_id: tmdb,
-          imdb_id: imdb,
-          tvdb_id: tvdb,
-          type: type,
-          language,
-        });
+      if (view !== 'text') {
+        try {
+          image = await Image.get(view, {
+            tmdb_id: tmdb,
+            imdb_id: imdb,
+            tvdb_id: tvdb,
+            type: type,
+            language,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
 
       return {
         username: slug,
@@ -155,7 +165,8 @@ const watching = async (req, next, view, language) => {
       })
       .then(response => {
         return Image.to_base64(response.images.avatar.full);
-      });
+      })
+      .catch(() => null);
   }
 
   return await trakt.users
@@ -187,14 +198,19 @@ const watching = async (req, next, view, language) => {
       }
 
       let image = null;
-      if (view !== 'text')
-        image = await Image.get(view, {
-          tmdb_id: tmdb,
-          imdb_id: imdb,
-          tvdb_id: tvdb,
-          type: type,
-          language,
-        });
+      if (view !== 'text') {
+        try {
+          image = await Image.get(view, {
+            tmdb_id: tmdb,
+            imdb_id: imdb,
+            tvdb_id: tvdb,
+            type: type,
+            language,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
 
       return {
         username: slug,
