@@ -43,20 +43,23 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  err.status = err.status || 500;
-  err.message = err.message || res.__('error.INTERNAL_ERROR');
+  if (res.headersSent) {
+    return next(err);
+  }
+  const status = err.status || 500;
+  const message = err.message || res.__('error.INTERNAL_ERROR');
 
-  res.status(err.status);
+  res.status(status);
   res.format({
     html: () => {
-      res.render('viewer', { title: err.status, error: err });
+      res.render('viewer', { title: status, error: { message, stack: err.stack } });
     },
     'image/*': () => {
       res.set('Content-Type', 'image/svg+xml');
-      res.render('error', { title: err.status, error: err });
+      res.render('error', { title: status, error: { message, stack: err.stack } });
     },
     default: () => {
-      res.send(`${err.status} | ${err.message}`);
+      res.send(`${status} | ${message}`);
     },
   });
 });
