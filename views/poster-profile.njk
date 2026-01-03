@@ -2,16 +2,16 @@
 
 {% set title = layout %}
 {% set width = 440 %}
-{% set height = 720 %}
+{% set height = 630 %}
 
 {% block body %}
 
   <!-- Sfondo -->
-  <rect x="0" y="0" width="100%" height="100%" fill="#ffffff" />
+  <rect x="0" y="0" width="100%" height="100%" fill="#1c1c1c" />
   
   <!-- Last Watched -->
   <g id="last_watched">
-    <rect x="0" y="0" width="100%" height="265" fill="#f2f2f2" display="block" />
+    <rect x="0" y="0" width="100%" height="265" fill="#262626" display="block" />
     {% if not data.profile.private %}
       <text x="50%" y="18%" fill="#bfbfbf" font-size="22" dominant-baseline="middle" text-anchor="middle">
         {{ __('view.NO_IMAGE') | capitalize }}
@@ -22,13 +22,12 @@
 
   <!-- Icon Profile -->
   <g id="icon_profile">
-    <circle cx="50%" cy="260" r="73" dominant-baseline="middle" fill="white" />
+    <circle cx="50%" cy="260" r="73" dominant-baseline="middle" fill="#1c1c1c" />
     <image x="50%" y="191" width="138" height="138" transform="translate(-69,0)" clip-path="circle(50%)" href="{{ data.profile.avatar if not data.profile.private else variables.trakt_icon_black }}"/>
-    <image x="50%" y="162" width="197" height="197" transform="translate(-98.5,0)" href="{{ variables.circle_icon }}"/>
   </g>
 
   <!-- User name -->
-  <text id="username" x="50%" y="390" font-size="38" dominant-baseline="middle" text-anchor="middle" dx="">{{ data.profile.username | upper }}</text>
+  <text id="username" x="50%" y="390" fill="#ffffff" font-size="38" dominant-baseline="middle" text-anchor="middle" dx="">{{ data.profile.username | upper }}</text>
 
   <!-- Badge -->
   {% if data.profile.private %}
@@ -45,7 +44,7 @@
   {% endif %}
 
   <!-- Stats -->
-  <svg y="559">
+  <svg y="480">
     <rect x="0" width="100%" height="100%" fill="#222222" />
     <line x1="50%" x2="50%" y2="100%" style="stroke:white;stroke-width:2;" />
 
