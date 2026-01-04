@@ -1,5 +1,9 @@
 /* Style */
 
+body {
+  font-family: 'Playfair Display', serif;
+}
+
 .github-fork-ribbon:before {
   background-color: #333;
 }
