@@ -16,7 +16,6 @@ router.get('/:slug/:layout/:view?', async (req, res, next) => {
   const layout = req.params.layout;
   const view = req.params.view || 'poster';
   const language = req.locale;
-  const preserveAspectRatio = req.query.preserveAspectRatio;
 
   if (layouts.indexOf(layout) < 0) return next(createError(400, res.__('error.LAYOUT_NOT_FOUND')));
   if (views.indexOf(view) < 0) return next(createError(400, res.__('error.VIEW_NOT_FOUND')));
@@ -38,7 +37,6 @@ router.get('/:slug/:layout/:view?', async (req, res, next) => {
         res.render(view + (layout === 'profile' ? `-${layout}` : ''), {
           layout: layout,
           data: data,
-          preserveAspectRatio: preserveAspectRatio,
         });
       } catch (err) {
         next(err);
